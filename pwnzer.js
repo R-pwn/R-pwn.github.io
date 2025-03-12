@@ -128,64 +128,75 @@ function handleInput(x, y) {
 
 // Mouse events
 canvas.addEventListener('mousemove', (e) => {
-    if (gameState === STATES.PLAYING) {
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const adjustedX = (e.clientX - rect.left) * scaleX;
-        player.facingRight = adjustedX > player.x + player.width / 2;
-    }
+    if (canvas.style.display === 'none' || gameState !== STATES.PLAYING) return;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const adjustedX = (e.clientX - rect.left) * scaleX;
+    player.facingRight = adjustedX > player.x + player.width / 2;
 });
-canvas.addEventListener('click', (e) => handleInput(e.clientX, e.clientY));
+canvas.addEventListener('click', (e) => {
+    if (canvas.style.display === 'none') return;
+    handleInput(e.clientX, e.clientY);
+});
 
 // Touch events
 canvas.addEventListener('touchstart', (e) => {
+    if (canvas.style.display === 'none') return;
     e.preventDefault();
     const touch = e.touches[0];
     handleInput(touch.clientX, touch.clientY);
 }, { passive: false });
 canvas.addEventListener('touchmove', (e) => {
+    if (canvas.style.display === 'none' || gameState !== STATES.PLAYING) return;
     e.preventDefault();
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const adjustedX = (touch.clientX - rect.left) * scaleX;
-    if (gameState === STATES.PLAYING) {
-        player.facingRight = adjustedX > player.x + player.width / 2;
-    }
+    player.facingRight = adjustedX > player.x + player.width / 2;
 }, { passive: false });
 
 // Game loop
 function update() {
+    // Don’t run the game if canvas is hidden
+    if (canvas.style.display === 'none') {
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '24px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('PAY $PWN TO PLAY!', canvas.width / 2, canvas.height / 2);
+        requestAnimationFrame(update);
+        return;
+    }
+
     if (gameState === STATES.START) {
         ctx.fillStyle = '#7e01fd'; // Purple background
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Tony Hawk/Madden/GoldenEye Intro Screen
         if (logoImage.complete) {
             const logoWidth = 200;
             const logoHeight = 128;
-            ctx.drawImage(logoImage, (canvas.width - logoWidth) / 2, 20, logoWidth, logoHeight); // Top middle logo
+            ctx.drawImage(logoImage, (canvas.width - logoWidth) / 2, 20, logoWidth, logoHeight);
         }
 
         ctx.fillStyle = '#ffffff';
-        ctx.font = '36px monospace'; // Big, bold Tony Hawk-style title
+        ctx.font = '36px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText('JEET SHREDDER', canvas.width / 2, 180); // Skate/sports mashup title
-
+        ctx.fillText('JEET SHREDDER', canvas.width / 2, 180);
         ctx.font = '16px monospace';
-        ctx.fillText('MISSION 69420: PWN OR DIE', canvas.width / 2, 220); // GoldenEye mission brief with Tony Hawk edge
+        ctx.fillText('MISSION 69420: PWN OR DIE', canvas.width / 2, 220);
         ctx.fillText('Jeets have sacked the world — only the arcade stands.', canvas.width / 2, 250);
         ctx.fillText('PWN the green monsters or humanity’s wiped out!', canvas.width / 2, 280);
         ctx.fillText('From #tonyhawkmaddengoldeneye69420 -> @pwnsolana', canvas.width / 2, 340);
         ctx.fillText('Made with Grok 3 - Music by AdhesiveWombat & Delsus', canvas.width / 2, 360);
 
-        // Prominent instructions
-        ctx.fillStyle = '#ffff00'; // Yellow box for standout
-        ctx.fillRect(canvas.width / 2 - 200, 390, 400, 60); // Centered box
-        ctx.fillStyle = '#000000'; // Black text
+        ctx.fillStyle = '#ffff00';
+        ctx.fillRect(canvas.width / 2 - 200, 390, 400, 60);
+        ctx.fillStyle = '#000000';
         ctx.font = '20px monospace';
-        ctx.fillText('CLICK OR TAP JEETS', canvas.width / 2, 415); // Instruction line 1
-        ctx.fillText('(GREEN MONSTERS) TO KILL!', canvas.width / 2, 440); // Instruction line 2
+        ctx.fillText('CLICK OR TAP JEETS', canvas.width / 2, 415);
+        ctx.fillText('(GREEN MONSTERS) TO KILL!', canvas.width / 2, 440);
 
         if (!introMusicPlayed) {
             introOutroMusic.play();
@@ -275,20 +286,18 @@ function update() {
         ctx.fillStyle = '#7e01fd';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Tony Hawk/Madden/GoldenEye Outro Screen
         ctx.fillStyle = '#ffffff';
-        ctx.font = '36px monospace'; // Bold Madden-style headline
+        ctx.font = '36px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText('GAME OVER, AGENT!', canvas.width / 2, 150); // GoldenEye agent flair
-
+        ctx.fillText('GAME OVER, AGENT!', canvas.width / 2, 150);
         ctx.font = '24px monospace';
-        ctx.fillText(`JEETS PWNED: ${kills}`, canvas.width / 2, 220); // Tony Hawk stat vibe
-        ctx.fillText(`SURVIVAL TIME: ${Math.floor(secondsPlayed)}s`, canvas.width / 2, 260); // Madden stat intensity
+        ctx.fillText(`JEETS PWNED: ${kills}`, canvas.width / 2, 220);
+        ctx.fillText(`SURVIVAL TIME: ${Math.floor(secondsPlayed)}s`, canvas.width / 2, 260);
 
         const hash = generateHash(kills, Math.floor(secondsPlayed));
         ctx.font = '16px monospace';
-        ctx.fillText(`MISSION CODE: ${hash}`, canvas.width / 2, 300); // GoldenEye encrypted hash
-        ctx.fillText('SKATE BACK IN — TAP TO RETRY!', canvas.width / 2, 360); // Tony Hawk retry energy
+        ctx.fillText(`MISSION CODE: ${hash}`, canvas.width / 0, 300);
+        ctx.fillText('SKATE BACK IN — TAP TO RETRY!', canvas.width / 2, 360);
 
         if (!outroMusicPlayed) {
             bgMusic.pause();
@@ -304,5 +313,9 @@ function update() {
     requestAnimationFrame(update);
 }
 
-// Start game
-update();
+// Initial check: only start if canvas is enabled, otherwise show a message
+if (canvas.style.display !== 'none') {
+    update();
+} else {
+    update(); // Still run update to show "PAY $PWN TO PLAY!" message
+}

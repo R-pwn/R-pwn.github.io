@@ -78,7 +78,9 @@
 
 								<p>You’re the OG serpent of the digital streets—slithering, dodging, and growing like a boss. But watch out! The longer you get, the tighter the turns—one wrong move and it’s game over, player. Keep it smooth, stay fast, and aim for the top spot. This isn’t just a game; it’s a mission to prove you’re still the king of the crawl.</p>
 								<p><strong>Controls:</strong> Use the arrow keys or swipe to guide your snake. Eat the pixels, grow larger, and dodge your own tail. Simple, right? Let’s see if you can hang.</p>
-
+								<button id="connectWallet">Connect Wallet</button>
+								<button id="playGame" disabled>Play Game 1</button>
+								<p id="walletStatus">Wallet not connected</p>
 
 								<div id="game-wrapper">
 									<canvas id="gameCanvas" width="480" height="510"></canvas>
@@ -298,7 +300,8 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-
+			<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+			<script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.js"></script>
 	</body>
 <script>
 	const canvas = document.getElementById('gameCanvas');
@@ -544,5 +547,32 @@
 	});
 
 	drawMenu();
+</script>
+<script type="module">
+	import { connectWallet, getConnectedWallet } from './wallet.js';
+
+	const connectButton = document.getElementById('connectWallet');
+	const playButton = document.getElementById('playGame');
+	const walletStatus = document.getElementById('walletStatus');
+
+	// Check wallet connection on page load
+	window.onload = () => {
+		const publicKey = getConnectedWallet();
+		if (publicKey) {
+			walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
+			playButton.disabled = false;
+		}
+	};
+
+	// Connect wallet on button click
+	connectButton.addEventListener('click', async () => {
+		try {
+			const publicKey = await connectWallet();
+			walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
+			playButton.disabled = false;
+		} catch (err) {
+			walletStatus.textContent = 'Connection failed';
+		}
+	});
 </script>
 </html>

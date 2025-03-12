@@ -45,12 +45,15 @@
 									<h1>PWNZER.exe</h1>
 								</header>
 
-								<p>Yo, retro agents, it’s go time! You’re James Bond—shredding on a skateboard, rocking a Madden jersey like the slickest spy ever. The last arcade’s under siege by green, evil Jeets—slimy, ugly little punks out to smash the final stronghold of pixel perfection. Back in the day, we’d pwn noobs over dial-up, and now it’s your turn to keep that spirit alive. Grind the streets, dodge their gooey claws, and protect those sacred cabinets—each hit’s a headshot vibe, a clutch save, a throwback to when gaming was raw and real. This ain’t just a game; it’s a mission to save the glory days. Get ready to roll and pwn like it’s ‘99!</p>
+								<p>Yo, retro agents, it’s go time! You’re James Bond—shredding on a skateboard, rocking a Madden jersey like the slickest spy ever. The last arcade’s under siege by green, evil Jeets—slimy, ugly little punks out to smash the final stronghold of pixel perfection. Get ready to roll and pwn like it’s ‘99!</p>
 								<p><strong>Controls:</strong> Click or tap the green ugly Jeets to blast ‘em away!</p>
-
+								<button id="connectWallet">Connect Wallet</button>
+								<button id="playGame" disabled>Play Game</button>
+								<h3 id="walletStatus">Wallet not connected</h3>
 								<div>
-									<canvas id="gameCanvas" width="640" height="480"></canvas>
-									<script src="pwnzer.js"></script>
+									<canvas id="gameCanvas" width="640" height="480" style="display: none;"></canvas>
+									<script type="module" src="/wallet.js"></script>
+		<script src="pwnzer.js"></script>
 								</div>
 							</section>
 
@@ -262,11 +265,58 @@
 			</div>
 
 		<!-- Scripts -->
+		
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+			<script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.js"></script>
+			<script type="module">
+				import { connectWallet, getConnectedWallet } from './wallet.js';
+				import { payFee } from './transactions.js';
+				const connectButton = document.getElementById('connectWallet');
+				const playButton = document.getElementById('playGame');
+				const walletStatus = document.getElementById('walletStatus');
+		
+				// Check wallet connection on page load
+				window.onload = () => {
+					const publicKey = getConnectedWallet();
+					if (publicKey) {
+						walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
+						playButton.disabled = false;
+					}
+				};
+		
+				// Connect wallet on button click
+				connectButton.addEventListener('click', async () => {
+					try {
+						const publicKey = await connectWallet();
+						walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
+						playButton.disabled = false;
+					} catch (err) {
+						walletStatus.textContent = 'Connection failed';
+					}
+				});
 
-	</body>
+				playButton.addEventListener('click', async () => {
+        const publicKey = getConnectedWallet();
+        if (!publicKey) {
+            alert('Please connect your wallet first!');
+            return;
+        }
+
+        try {
+            await payFee(publicKey);
+            alert('Fee paid! Starting game...');
+            // Add your game logic here
+        } catch (err) {
+            console.error('Fee payment failed:', err);
+            alert('Failed to pay the fee. Check your $PWN balance.');
+        }
+    });
+			</script>
+	
+		</body>
 </html>
