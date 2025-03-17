@@ -135,8 +135,8 @@
             <section>
                 <ul class="tab-nav">
                     <li><a href="#pwn-tv" class="tab-link button active ">PWN TV</a></li>
-                    <li><a href="#pwn-arcade" class="tab-link button">WEB3 Arcade</a></li>
-                    <li><a href="#pwnifyer" class="tab-link button">PWNify your PFP</a></li>
+                    <li><a href="#pwn-arcade" class="tab-link button ">WEB3 Arcade</a></li>
+                    <li><a href="#pwnifyer" class="tab-link button ">PWNify your PFP</a></li>
                 </ul>
 
                 <div id="pwn-tv" class="tab-content active">
@@ -434,16 +434,31 @@
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
 <script>
-    // Tab Switching Logic
     $(document).ready(function() {
-        $('.tab-link').click(function(e) {
-            e.preventDefault();
-            $('.tab-link').removeClass('active');
-            $(this).addClass('active');
+        // Set initial active tab (PWN TV)
+        $('.tab-link').removeClass('active');
+        $('.tab-content').removeClass('active');
+        $('a[href="#pwn-tv"]').addClass('active');
+        $('#pwn-tv').addClass('active');
 
+        // Tab switching with click and touch support
+        $('.tab-link').on('click touchend', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            e.stopPropagation(); // Stop event bubbling
+
+            // Remove active classes
+            $('.tab-link').removeClass('active');
             $('.tab-content').removeClass('active');
+
+            // Add active class to clicked/touched tab
+            $(this).addClass('active');
             const tabId = $(this).attr('href');
             $(tabId).addClass('active');
+        });
+
+        // Prevent double-tap issues on mobile
+        $('.tab-link').on('touchstart', function(e) {
+            e.stopPropagation(); // Prevent extra triggers
         });
     });
 </script>

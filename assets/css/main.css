@@ -654,11 +654,10 @@ hr.major {
   padding: 0;
   margin: 0 0 0em 0;
   display: flex;
-
 }
 
 .tab-nav li {
-  margin: 0 1em 0 0;
+  margin: 5px; /* Spacing for touch targets */
 }
 
 .tab-nav li a {
@@ -683,6 +682,18 @@ hr.major {
 
 .tab-content.active {
   display: block;
+}
+
+/* Ensure responsiveness */
+@media screen and (max-width: 768px) {
+  .tab-nav {
+     /* Stack tabs vertically on small screens */
+
+  }
+  .tab-link.button {
+    width: 100%; /* Full width for easier tapping */
+    max-width: 100px; /* Optional: cap width */
+  }
 }
 
 @media screen and (max-width: 1280px) {
@@ -2071,7 +2082,7 @@ button,
   cursor: pointer;
   display: inline-block;
   font-family: "Press Start 2P", monospace;
-  font-size: 1.2em;
+  font-size: 0.8em;
   font-weight: 700;
   height: 4em;
   letter-spacing: 0.1em;
