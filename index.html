@@ -1,29 +1,5 @@
 <!DOCTYPE HTML>
-<html>
-<div class="moving-background"></div>
-
-<style>
-    .moving-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-image: url('images/screensaver.gif');
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        animation: move-around 10s linear infinite;
-        z-index: -1;
-    }
-
-    @keyframes move-around {
-        0% { top: 0; left: 0; }
-        25% { top: 0; left: 100vw; transform: translateX(-100%); }
-        50% { top: 100vh; left: 100vw; transform: translate(-100%, -100%); }
-        75% { top: 100vh; left: 0; transform: translateY(-100%); }
-        100% { top: 0; left: 0; }
-    }
-</style>
+<html lang="en">
 
 <head>
     <title>PWN | TonyHawkMaddenGoldenEye69420</title>
@@ -31,9 +7,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <style>
+        .moving-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('images/screensaver.gif');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            animation: move-around 10s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes move-around {
+            0% { top: 0; left: 0; }
+            25% { top: 0; left: 100vw; transform: translateX(-100%); }
+            50% { top: 100vh; left: 100vw; transform: translate(-100%, -100%); }
+            75% { top: 100vh; left: 0; transform: translateY(-100%); }
+            100% { top: 0; left: 0; }
+        }
+    </style>
 </head>
 
-<body class="is-preload">
+<body>
+<div class="moving-background"></div>
 <!-- Wrapper -->
 <div id="wrapper">
     <!-- Main -->
@@ -109,7 +108,7 @@
                 <p>Word is, this all kicked off when some mad-genius map designer in Warcraft III flubbed "owned" into "pwned" while flexing their win. And us retro gamer kids? We ate it up like it was the last slice of pizza at a sleepover. It was not just a word - it was a vibe, a badge of honor, a sonic boom of domination. By 2003, the OGs were cementing it in Urban Dictionary, screaming to the world that "pwn" was our thing - born from the digital dungeons of gaming culture.</p>
 
                 <div>
-                    <iframe height="300px" width="500px" src="https://www.youtube.com/embed/Fhb89V43KWc?si=nr0PEnrq68nFXxel"></iframe>
+                    <iframe height="200px" width="300px" src="https://www.youtube.com/embed/Fhb89V43KWc?si=nr0PEnrq68nFXxel"></iframe>
                 </div>
 
                 </section>
@@ -136,7 +135,7 @@
                 <ul class="tab-nav">
                     <li><a href="#pwn-tv" class="tab-link button active ">PWN TV</a></li>
                     <li><a href="#pwn-arcade" class="tab-link button ">WEB3 Arcade</a></li>
-                    <li><a href="#pwnifyer" class="tab-link button ">PWNify your PFP</a></li>
+                    <li><a href="#pwnifyer" class="tab-link button ">PWNifyer</a></li>
                 </ul>
 
                 <div id="pwn-tv" class="tab-content active">
@@ -151,15 +150,15 @@
                         </article>
                         <article>
                             <a class="image"><video width="100%" controls><source src="/images/bb_video.mp4" type="video/mp4"></video></a>
-                            <h3>blockbuster_CAM_SHAKY_AS_HELL.avi.mp4</h3>
+                            <h3>blockbuster_CAM_SHAKY.mp4</h3>
                         </article>
                         <article>
                             <a class="image"><video width="100%" controls><source src="/images/sunshine.mp4" type="video/mp4"></video></a>
-                            <h3>SUNSHINE_FULL_MOVIE_5min_version.mpg</h3>
+                            <h3>SUNSHINE_FULL_MOVIE.mpg</h3>
                         </article>
                         <article>
                             <a class="image"><video width="100%" controls><source src="/images/higher_video.mp4" type="video/mp4"></video></a>
-                            <h3>can_you_take_me_higheeerr.mp4</h3>
+                            <h3>higheeerr.mp4</h3>
                         </article>
                         <article>
                             <a class="image"><video width="100%" controls><source src="/images/jesus_walks_video.mp4" type="video/mp4"></video></a>
@@ -203,16 +202,14 @@
                     <p>Plug In and PWN! Welcome to the first Web3 Arcade, a neon-charged rewind to the 80s and 90s, powered by $PWN tokens. This ain’t just gaming—it’s a pixel-punching, joystick-jamming shrine to the golden age. Built with Grok 3 (xAI), our mini-games drip with 8-bit soul and arcade grind. Stack $PWN, smash high scores, and flex those retro skills. More fire’s dropping soon—get ready to dominate like it’s 1999!
 
                     </p>
-                    <div align="center"><img src="images/uc.gif" alt="Under Construction"></div>
-                </div>
+                    <div align="center"><img src="images/uc.gif" alt="Under Construction" class="uc-image"></div> </div>
 
                 <div id="pwnifyer" class="tab-content">
                     <header class="major">
                         <h2>Join the PWN Community and PWNify your PFP!</h2>
                     </header>
 
-                    <div align="center"><img src="images/uc.gif" alt="Under Construction"></div>
-                </div>
+                    <div align="center"><img src="images/uc.gif" alt="Under Construction" class="uc-image"></div></div>
             </section>
 
             <section>
@@ -238,7 +235,7 @@
                     <h2>Join the PWN Community!</h2>
                 </header>
                 <ul class="actions">
-                    <li><a target="_blank" href="https://t.me/TonyHawkMaddenGoldenEye" class="button primary large">Join our Telegram</a></li>
+                    <li><a target="_blank" href="https://t.me/TonyHawkMaddenGoldenEye" class="button  large">Join our Telegram</a></li>
                 </ul>
                 <div class="box alt">
                     <div class="row gtr-50 gtr-uniform">

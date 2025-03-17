@@ -646,7 +646,19 @@ hr.major {
   }
 }
 
-
+.marquee {
+  white-space: nowrap;
+  overflow: hidden;
+  animation: marquee 10s linear infinite alternate;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.uc-image {
+  max-width: 100%;
+  height: auto;
+}
 
 /* Tab Styles */
 .tab-nav {
@@ -692,7 +704,8 @@ hr.major {
   }
   .tab-link.button {
     width: 100%; /* Full width for easier tapping */
-    max-width: 100px; /* Optional: cap width */
+    max-width: 80px; /* Optional: cap width */
+    font-size: 0,3em;
   }
 }
 
