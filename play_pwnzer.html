@@ -8,7 +8,6 @@
 <div class="moving-background"></div>
 
 
-</style>
 	<head>
 		<title>PWN | TonyHawkMaddenGoldenEye69420</title>
 		<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
@@ -44,45 +43,50 @@
 								<header class="major">
 									<h1>PWNZER.exe</h1>
 								</header>
-
 								<p>Yo, retro agents, it’s go time! You’re James Bond—shredding on a skateboard, rocking a Madden jersey like the slickest spy ever. The last arcade’s under siege by green, evil Jeets—slimy, ugly little punks out to smash the final stronghold of pixel perfection. Get ready to roll and pwn like it’s ‘99!</p>
 								<p><strong>Controls:</strong> Click or tap the green ugly Jeets to blast ‘em away!</p>
+								<p><strong>Fee:</strong> 0.01 SOL to play</p>
 								<button id="connectWallet">Connect Wallet</button>
-								<button id="playGame" disabled>Play Game</button>
-								<h3 id="walletStatus">Wallet not connected</h3>
-								<div>
+								<button id="playGame" disabled>Play Game 1</button>
+								<p id="walletStatus">Wallet not connected</p>
+
+								<script type="module">
+									import { connectWallet, getConnectedWallet } from './wallet.js';
+
+									const connectButton = document.getElementById('connectWallet');
+									const playButton = document.getElementById('playGame');
+									const walletStatus = document.getElementById('walletStatus');
+
+									// Check wallet connection on page load
+									window.onload = () => {
+										const publicKey = getConnectedWallet();
+										if (publicKey) {
+											walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
+											playButton.disabled = false;
+										}
+									};
+
+									// Connect wallet on button click
+									connectButton.addEventListener('click', async () => {
+										try {
+											const publicKey = await connectWallet();
+											walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
+											playButton.disabled = false;
+										} catch (err) {
+											walletStatus.textContent = 'Connection failed';
+										}
+									});
+								</script><div>
 									<canvas id="gameCanvas" width="640" height="480" style="display: none;"></canvas>
-									<script type="module" src="/wallet.js"></script>
-		<script src="pwnzer.js"></script>
 								</div>
 							</section>
+							<script type="module" src="/wallet.js"></script>
+							<script type="module" src="/pwnzer.js"></script>
 
 
 
 							<!-- Section -->
-							<section>
-								<header class="major">
-									<h2>🫵 Join the PWN Community and PWNify your PFP! </h2>
-								</header>
 
-								<ul class="actions">
-									<li><a target="_blank" href="https://t.me/TonyHawkMaddenGoldenEye" class="button primary large ">Join the $PWN Telegram</a></li>
-								</ul>
-
-								<div class="box alt">
-									<div class="row gtr-50 gtr-uniform">
-										<div class="col-2"><span class="image fit"><img src="images/ryu_pwn.jpg" alt="" /></span></div>
-										<div class="col-2"><span class="image fit"><img src="images/joshi_pwn.jpg" alt="" /></span></div>
-										<div class="col-2"><span class="image fit"><img src="images/lara_pwn.jpg" alt="" /></span></div>
-										<!-- Break -->
-										<div class="col-2"><span class="image fit"><img src="images/sonic_pwn.jpg" alt="" /></span></div>
-										<div class="col-2"><span class="image fit"><img src="images/crash_pwn.jpg" alt="" /></span></div>
-										<div class="col-2"><span class="image fit"><img src="images/pamela_pwn.jpg" alt="" /></span></div>
-										<!-- Break -->
-
-									</div>
-								</div>
-							</section>
 
 						</div>
 					</div>
@@ -265,58 +269,59 @@
 			</div>
 
 		<!-- Scripts -->
-		
+		<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+		<script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.js"></script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-			<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
-			<script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.js"></script>
-			<script type="module">
-				import { connectWallet, getConnectedWallet } from './wallet.js';
-				import { payFee } from './transactions.js';
-				const connectButton = document.getElementById('connectWallet');
-				const playButton = document.getElementById('playGame');
-				const walletStatus = document.getElementById('walletStatus');
-		
-				// Check wallet connection on page load
-				window.onload = () => {
-					const publicKey = getConnectedWallet();
-					if (publicKey) {
-						walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
-						playButton.disabled = false;
-					}
-				};
-		
-				// Connect wallet on button click
-				connectButton.addEventListener('click', async () => {
-					try {
-						const publicKey = await connectWallet();
-						walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
-						playButton.disabled = false;
-					} catch (err) {
-						walletStatus.textContent = 'Connection failed';
-					}
-				});
+		<script type="module">
+			import { connectWallet, getConnectedWallet } from './wallet.js';
+			import { payFee } from './transactions.js';
 
-				playButton.addEventListener('click', async () => {
-        const publicKey = getConnectedWallet();
-        if (!publicKey) {
-            alert('Please connect your wallet first!');
-            return;
-        }
+			const connectButton = document.getElementById('connectWallet');
+			const playButton = document.getElementById('playGame');
+			const walletStatus = document.getElementById('walletStatus');
 
-        try {
-            await payFee(publicKey);
-            alert('Fee paid! Starting game...');
-            // Add your game logic here
-        } catch (err) {
-            console.error('Fee payment failed:', err);
-            alert('Failed to pay the fee. Check your $PWN balance.');
-        }
-    });
-			</script>
-	
+			window.onload = () => {
+				const publicKey = getConnectedWallet();
+				if (publicKey) {
+					walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
+					playButton.disabled = false;
+				}
+			};
+
+			connectButton.addEventListener('click', async () => {
+				try {
+
+					const publicKey = await connectWallet();
+					walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
+					playButton.disabled = false;
+				} catch (err) {
+					walletStatus.textContent = 'Connection failed';
+				}
+			});
+
+			playButton.addEventListener('click', async () => {
+
+				const publicKey = getConnectedWallet();
+				if (!publicKey) {
+					alert('Please connect your wallet first!');
+					return;
+				}
+
+				try {
+
+					await payFee(publicKey);
+					alert('Fee paid! Starting game...');
+					// Add your game logic here
+				} catch (err) {
+					console.error('Fee payment failed:', err);
+					alert('Failed to pay the fee. Check your $PWN balance.');
+				}
+			});
+		</script>
+
 		</body>
 </html>

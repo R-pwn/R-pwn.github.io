@@ -1,0 +1,21 @@
+{
+  "name": "r-pwn.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "pwnzer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/R-pwn/R-pwn.github.io.git"
+  },
+  "private": true,
+  "dependencies": {
+    "@solana/spl-token": "^0.4.13",
+    "@solana/web3.js": "^1.98.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.8"
+  }
+}

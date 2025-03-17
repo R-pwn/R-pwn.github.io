@@ -1,35 +1,33 @@
 // wallet.js
-import { Connection, PublicKey } from '@solana/web3.js';
-import { payFee } from './transactions.js';
+const { Connection, PublicKey } = solanaWeb3;
 
-// Ensure Connection is only declared once
+// Solana network (use 'mainnet-beta' for production, 'devnet' for testing)
 const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
 
+// Check if Phantom is installed and connect
 async function connectWallet() {
-    console.log('Attempting to connect wallet...');
     if ('solana' in window && window.solana.isPhantom) {
         try {
-            if (window.solana.isConnected) {
-                const publicKey = window.solana.publicKey.toString();
-                localStorage.setItem('phantomPublicKey', publicKey);
-                return publicKey;
-            }
             const resp = await window.solana.connect();
             const publicKey = resp.publicKey.toString();
+            // Store the public key in localStorage to persist across pages
             localStorage.setItem('phantomPublicKey', publicKey);
             console.log('Connected to Phantom:', publicKey);
+
             return publicKey;
+
         } catch (err) {
-            console.error('Wallet connection failed:', err);
-            throw err;
+            console.error('Connection failed:', err);
+            throw new Error('User rejected the request or an error occurred');
         }
     } else {
         alert('Please install the Phantom wallet extension!');
         window.open('https://phantom.app/', '_blank');
-        throw new Error('Phantom wallet not detected');
+        throw new Error('Phantom not detected');
     }
 }
 
+// Check if wallet is already connected (e.g., on page load)
 function getConnectedWallet() {
     const publicKey = localStorage.getItem('phantomPublicKey');
     if (publicKey && window.solana && window.solana.isConnected) {
@@ -38,49 +36,14 @@ function getConnectedWallet() {
     return null;
 }
 
-const connectButton = document.getElementById('connectWallet');
-const playButton = document.getElementById('playGame');
-const walletStatus = document.getElementById('walletStatus');
-const gameCanvas = document.getElementById('gameCanvas');
-
-if (!connectButton || !playButton || !walletStatus || !gameCanvas) {
-    console.error('DOM elements not found.');
-} else {
-    window.onload = () => {
-        const publicKey = getConnectedWallet();
-        if (publicKey) {
-            walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
-            playButton.disabled = false;
-        }
-    };
-
-    connectButton.addEventListener('click', async () => {
-        try {
-            const publicKey = await connectWallet();
-            walletStatus.textContent = `Connected: ${publicKey.slice(0, 6)}...`;
-            playButton.disabled = false;
-        } catch (err) {
-            walletStatus.textContent = 'Failed to connect wallet';
-        }
-    });
-
-    playButton.addEventListener('click', async () => {
-        const publicKey = getConnectedWallet();
-        if (!publicKey) {
-            alert('Please connect your wallet first!');
-            return;
-        }
-        try {
-            walletStatus.textContent = 'Processing fee...';
-            await payFee(publicKey);
-            walletStatus.textContent = 'Fee paid! Game starting...';
-            gameCanvas.style.display = 'block';
-        } catch (err) {
-            console.error('Fee payment failed:', err);
-            walletStatus.textContent = 'Failed to pay the fee';
-            alert('Failed to pay the fee: ' + err.message);
-        }
-    });
+// Disconnect wallet (optional)
+function disconnectWallet() {
+    if (window.solana) {
+        window.solana.disconnect();
+        localStorage.removeItem('phantomPublicKey');
+        console.log('Disconnected from Phantom');
+    }
 }
 
-export { connectWallet, getConnectedWallet, connection };
+// Export functions for use in other scripts
+export { connectWallet, getConnectedWallet, disconnectWallet, connection };
